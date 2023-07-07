@@ -18,6 +18,12 @@ function bindData(articles) {
     const newsCardTemplate = document.getElementById("template-news-card");
 
     cardsContainer.innerHTML = "";
+     if (!Array.isArray(articles)) {
+        // Handle the case when articles is not an array
+        console.error("Invalid articles data:", articles);
+        // Optionally, display an error message to the user or take other appropriate action
+        return;
+    }
 
     articles.forEach((article) => {
         if (!article.urlToImage) return;
