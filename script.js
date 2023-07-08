@@ -18,12 +18,6 @@ function bindData(articles) {
     const newsCardTemplate = document.getElementById("template-news-card");
 
     cardsContainer.innerHTML = "";
-     if (!Array.isArray(articles)) {
-        // Handle the case when articles is not an array
-        console.error("Invalid articles data:", articles);
-        // Optionally, display an error message to the user or take other appropriate action
-        return;
-    }
 
     articles.forEach((article) => {
         if (!article.urlToImage) return;
@@ -53,15 +47,31 @@ function fillDataInCard(cardClone, article) {
         window.open(article.url, "_blank");
     });
 }
+let curSelectedNav = document.querySelector('.active');
 
-let curSelectedNav = null;
 function onNavItemClick(id) {
     fetchNews(id);
     const navItem = document.getElementById(id);
-    curSelectedNav?.classList.remove('active');
-    curSelectedNav= navItem;
-    curSelectedNav.classList.add('active');
-}
+  
+    if (curSelectedNav) {
+      curSelectedNav.classList.remove('active');
+    }
+  
+    curSelectedNav = navItem;
+  
+    if (curSelectedNav) {
+      curSelectedNav.classList.add('active');
+    }
+  }
+  
+// let curSelectedNav =document.querySelector('.active');;
+// function onNavItemClick(id) {
+//     fetchNews(id);
+//     const navItem = document.getElementById(id);
+//     curSelectedNav.classList.remove('active');
+//     curSelectedNav= navItem;
+//     curSelectedNav.classList.add('active');
+// }
 
 const searchButton = document.getElementById('search-button');
 const searchText = document.getElementById('search-text');
