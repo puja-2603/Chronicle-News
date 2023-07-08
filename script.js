@@ -8,32 +8,38 @@ function reload() {
     window.location.reload();
 }
 
-async function fetchNews(query) {
-   const res = await fetch(`${url}${query}&apiKey=${API_KEY}`, {
-    headers: {
-      "User-Agent": "Mozilla/5.0", // Add a user-agent header
-    },
-    mode: "cors", // Add the mode option as "cors"
-    redirect: "follow", // Add the redirect option as "follow"
-  });
 
+async function fetchNews(query) {
+  try {
+    const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch news: ${res.status} ${res.statusText}`);
+    }
     const data = await res.json();
     bindData(data.articles);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function bindData(articles) {
-    const cardsContainer = document.getElementById("cards-container");
-    const newsCardTemplate = document.getElementById("template-news-card");
+  const cardsContainer = document.getElementById("cards-container");
+  const newsCardTemplate = document.getElementById("template-news-card");
 
-    cardsContainer.innerHTML = "";
+  cardsContainer.innerHTML = "";
 
+  if (articles && Array.isArray(articles)) {
     articles.forEach((article) => {
-        if (!article.urlToImage) return;
-        const cardClone = newsCardTemplate.content.cloneNode(true);
-        fillDataInCard(cardClone, article);
-        cardsContainer.appendChild(cardClone);
+      if (!article.urlToImage) return;
+      const cardClone = newsCardTemplate.content.cloneNode(true);
+      fillDataInCard(cardClone, article);
+      cardsContainer.appendChild(cardClone);
     });
+  } else {
+    console.error("Invalid articles data.");
+  }
 }
+
 
 function fillDataInCard(cardClone, article) {
     const newsImg = cardClone.querySelector("#news-img");
