@@ -9,7 +9,14 @@ function reload() {
 }
 
 async function fetchNews(query) {
-    const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+   const res = await fetch(`${url}${query}&apiKey=${API_KEY}`, {
+    headers: {
+      "User-Agent": "Mozilla/5.0", // Add a user-agent header
+    },
+    mode: "cors", // Add the mode option as "cors"
+    redirect: "follow", // Add the redirect option as "follow"
+  });
+
     const data = await res.json();
     bindData(data.articles);
 }
