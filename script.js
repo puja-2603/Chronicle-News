@@ -1,7 +1,8 @@
 function fetchNews(category) {
-    const apiKey = 'f3470f7ee7214b56a3f39ae0671618e7'; 
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${apiKey}`;
-  
+   const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${apiKey}`;
+    const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
+
+const url = `${corsProxyUrl}${apiUrl}`;
     // Make an HTTP GET request
     fetch(url)
       .then(response => response.json())
