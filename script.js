@@ -2,15 +2,24 @@ function fetchNews(category) {
   const apiKey = 'f3470f7ee7214b56a3f39ae0671618e7';
   const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${apiKey}`;
 
-  // Make an HTTP GET request
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
+  // Create an AJAX request
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', apiUrl, true);
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
       displayNews(data.articles);
-    })
-    .catch(error => {
-      console.error('Error fetching news:', error);
-    });
+    } else {
+      console.error('Error fetching news:', xhr.status);
+    }
+  };
+
+  xhr.onerror = function () {
+    console.error('Request failed');
+  };
+
+  xhr.send();
 }
 
 // Function to display news articles as cards
